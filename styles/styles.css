@@ -1,3 +1,6 @@
+.board {
+}
+
 .tile {
     width: 10em;
     height: 10em;
@@ -5,9 +8,10 @@
 }
 
 .row {
-    display: inline-block;
+    display: flex;
 }
 
 .piece {
     font-size: 5em;
+    margin: 0;
 }

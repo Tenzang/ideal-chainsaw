@@ -24,15 +24,44 @@ const winnerCheck = function() {
         };
         
         // Checks if a value is equal to first element in the row/col being checked.
-        const winnerFound = function(element, index, array) {
-            return element >= array[0];
+        const winnerFound = function(line) {
+            let output = true;
+
+            for (let i = 0; i < line.length; i++) {
+                
+                if (!line[i] || line[i] != line[0]) {
+                    output = false;
+                };
+
+            };
+
+            return output;
         };
 
         // returns true if all values in a row, column or diagonal are the same.
-        if (colToCheck.every(winnerFound) || rowToCheck.every(winnerFound) ||descDiagCheck.every(winnerFound) || ascDiagCheck.every(winnerFound)) {
-            
+        if ( winnerFound(colToCheck) ) {
+            console.log('col victory');
+            console.log(colToCheck);
             return true;
-            
+        };
+
+        if ( winnerFound(rowToCheck) ) {
+            console.log('row victory');
+            console.log(rowToCheck);
+            return true;
+        };
+
+        if ( winnerFound(descDiagCheck) ) {
+            console.log('desc victory');
+            console.log(descDiagCheck);
+
+            return true;
+        };
+
+        if ( winnerFound(ascDiagCheck) ) {
+            console.log('asc victory');
+            console.log(ascDiagCheck);
+            return true;
         };
 
     };
@@ -59,17 +88,20 @@ const drawCheck = function() {
     return true;
 };
 
-const generateOutcome = function(outcome) {
+const generateOutcome = function(message) {
     const output = {};
     
-    if (outcome === '-') {
-        output.outcome = "Draw!";
-    } else if (outcome === 'X') {
-        output.outcome = "X Wins!";
-    } else if (outcome === 'O') {
-        output.outcome = "O Wins!";
+    if (message === '-') {
+        output.message = "Draw!";
+        output.gameOver = true;
+    } else if (message === 'X') {
+        output.message = "X Wins!";
+        output.gameOver = true;
+    } else if (message === 'O') {
+        output.message = "O Wins!";
+        output.gameOver = true;
     } else {
-        output.outcome = "Invalid Outcome";
+        output.message = "The game continues...";
     };
 
     return output;
@@ -79,8 +111,10 @@ const game = {
     
     board: boardSetup,
 
+    gameOver: false,
+
     // Place piece at 0-index'd position on the board.
-    // Returns outcome object if terminating move played, else false.
+    // Returns message object if terminating move played, else false.
     xMove: function(x, y) {
         
         this.board[y][x] = 'X';
@@ -91,6 +125,7 @@ const game = {
             return generateOutcome('-');
         };
 
+        return generateOutcome();
     },
 
     oMove: function (x, y) {
@@ -103,6 +138,7 @@ const game = {
             return generateOutcome('-');
         };
 
+        return generateOutcome();
     }
 
 };
