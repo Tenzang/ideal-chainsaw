@@ -1,0 +1,13 @@
+.tile {
+    width: 10em;
+    height: 10em;
+    border: solid;
+}
+
+.row {
+    display: inline-block;
+}
+
+.piece {
+    font-size: 5em;
+}
