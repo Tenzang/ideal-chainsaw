@@ -1,17 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: 'PT Mono', monospace;
+    text-align: center;
+}
+
 .board {
+    margin: 1% auto;
+    width: 500px;
+    height: 500px;
 }
 
 .tile {
+    position: relative;
+    display: inline-block;
     width: 10em;
     height: 10em;
     border: solid;
+    margin: -5px;
 }
 
 .row {
-    display: flex;
+    display: block;
+    margin: 4px;
+    width: 500px;
 }
 
 .piece {
+    position: absolute;
+    display: block;
     font-size: 5em;
-    margin: 0;
+    margin: 34px auto;
+    left: 35%;
+}
+
+.results {
+    margin: 0 auto;
 }
