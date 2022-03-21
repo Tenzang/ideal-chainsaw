@@ -1,7 +1,13 @@
-const boardSetup = new Array(3);
-boardSetup[0] = new Array(3);
-boardSetup[1] = new Array(3);
-boardSetup[2] = new Array(3);
+const boardSetup = function(size) {
+
+    const boardSetup = new Array(size);
+
+    for (let i = 0; i < size; i++) {
+        boardSetup[i] = new Array(size);
+    };
+
+    return boardSetup;
+};
 
 // Checks if the values in a line are identical.
 const winnerFound = function(line) {
@@ -87,10 +93,16 @@ const generateOutcome = function(message) {
 
 // Main game object.
 const game = {
+
+    boardSize: 3,
     
-    board: boardSetup, // Stores the board state.
+    board: boardSetup(3), // Stores the board state.
 
     gameOver: false, // Stores whether game has ended.
+
+    xWins: 0,
+
+    oWins: 0,
 
     // Move methods place piece at 0-index'd position on the board and returns the outcome of the move in an object.
     xMove: function(x, y) {
@@ -98,6 +110,7 @@ const game = {
         this.board[y][x] = 'X';
         
         if (winnerCheck()) {
+            this.xWins ++;
             return generateOutcome('X');
         } else if (drawCheck()) {
             return generateOutcome('-');
@@ -111,12 +124,15 @@ const game = {
         this.board[y][x] = 'O';
 
         if (winnerCheck()) {
+            this.oWins ++;
             return generateOutcome('O');
         } else if (drawCheck()) {
             return generateOutcome('-');
         };
 
         return generateOutcome();
-    }
+    },
+
+    resetBoard: function() { this.board = boardSetup(this.boardSize) }
 
 };

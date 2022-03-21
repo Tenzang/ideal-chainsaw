@@ -6,7 +6,19 @@
     text-align: center;
 }
 
+h4:last-child {
+    margin: 50px 0;
+}
+
+.score {
+    display: inline-block;
+    vertical-align: top;
+    margin: 180px auto;
+    width: 170px;
+}
+
 .board {
+    display: inline-block;
     margin: 1% auto;
     width: 500px;
     height: 500px;
@@ -37,4 +49,8 @@
 
 .results {
     margin: 0 auto;
+}
+
+.hidden {
+    visibility: hidden;
 }
