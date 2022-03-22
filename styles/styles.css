@@ -55,6 +55,7 @@ h4:last-child {
 
 .hidden {
     visibility: hidden;
+    opacity: 0;
 }
 
 .hover, .hidden {
