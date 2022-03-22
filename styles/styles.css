@@ -35,7 +35,7 @@ h4:last-child {
 
 .row {
     display: block;
-    margin: 4px;
+    margin: 5px;
     width: 500px;
 }
 
@@ -46,7 +46,6 @@ h4:last-child {
     margin: 34px auto;
     left: 35%;
     transition: all 0.5s;
-    /* transition: color 0.5s; */
 }
 
 .results {
@@ -60,4 +59,46 @@ h4:last-child {
 
 .hover, .hidden {
     color: gainsboro;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    top: 9%;
+    left: calc(50% - 250px);
+    width: 500px;
+    height: 500px;
+    background-color: gainsboro;
+    z-index: 1;
+    border-radius: 5px;
+    border: 1px dashed black;
+}
+
+.menu div {
+    margin: 63px 0;
+}
+
+.menu span {
+    display: inline-block;
+}
+
+.difficulties {
+    transition: all 1s;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.difficulties span span {
+    font-weight: bold;
+    opacity: 50%;
+    transition: opacity 1s;
+}
+
+.mode1 {
+    transition: opacity 1s;
+}
+
+.mode2 {
+    transition: opacity 1s;
+    opacity: 50%;
 }

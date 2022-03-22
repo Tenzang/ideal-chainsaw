@@ -126,4 +126,50 @@ $(document).ready(function() {
         $('.rematch').toggleClass('hidden'); // Hide rematch button
     });
 
+    $('body').on('keyup', function() {
+        // Toggles menu when space key is pressed.
+        if (arguments[0].originalEvent.code === 'Space') {
+            $('.menu').slideToggle(400);
+        };
+
+    });
+    
+    // Menu listeners
+    $('.mode1').on('click', function() {
+        $(this).css('opacity', '100');
+        $('.mode2').css('opacity', '50%');
+        $('.difficulties span span').css('opacity', '50%');
+        $('.difficulties').css('visibility', 'hidden');
+        $('.difficulties').css('opacity', '0');
+    });
+
+    $('.mode2').on('click', function() {
+        $(this).css('opacity', '100');
+        $('.mode1').css('opacity', '50%');
+        $('.difficulties').css('visibility', 'visible');
+        $('.difficulties').css('opacity', '100');
+    });
+
+    $('.difficulties span span').on('click', function() {
+        $('.difficulties span span').css('opacity', '50%');
+        $(this).css('opacity', '100');
+        $(this).removeClass('temp');
+    });
+
+    // Hovering over AI difficulties
+    $('.difficulties span span').hover(
+        function() {
+            const $difficulty = $(this);
+            if ($difficulty.css('opacity') != '700') {
+                $difficulty.css('opacity', '100');
+                $difficulty.addClass('temp');
+            };
+        },
+        function() {
+            if ($(this).hasClass('temp')) {
+                $(this).removeClass('temp');
+                $(this).css('opacity', '50%');
+            };
+        }
+    );
 });
