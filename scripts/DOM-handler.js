@@ -2,20 +2,58 @@ let xTurn = true; // Boolean to track player turns.
 
 $(document).ready(function() {
     
+    const hoverIn = function(eventTrigger) {
+        const $piece = $(eventTrigger).children();
+
+        if ($piece.hasClass('hidden')) {
+
+            $piece.addClass('hover');
+            $piece.removeClass('hidden');
+            
+            if (xTurn) {
+                $piece.text('X');
+            } else {
+                $piece.text('O');
+            };
+
+        };
+
+    };
+
+    const hoverOut = function(eventTrigger) {
+        const $piece = $(eventTrigger).children();
+
+        if ($piece.hasClass('hover')) {
+            $piece.removeClass('hover');
+            $piece.addClass('hidden');
+        };
+
+    };
+
+    $('.tile').hover( 
+        function() {
+            hoverIn(this) // Adds .hover piece when mouse is over empty tile.
+        },
+        function() {
+            hoverOut(this) // Removes .hover piece when mouse is over empty tile
+        }
+    );
+    
     const newGame = function(eventTrigger) {
         const $tile = $(eventTrigger);
+        const $piece = $(eventTrigger).children();
     
            // Check class for coordinates of clicked node.
            const x = $tile[0].classList[1][1];
            const y = $tile[0].classList[2][1];
        
            // Run move function with coordinates the insert piece into node
-           if (!$tile.text()) {
+           if ($piece.hasClass('hover')) {
        
                if (xTurn) {
                    const outcome = game.xMove(x, y);
     
-                   $(eventTrigger).html($('<p class="piece">X</p>'));
+                   $piece.removeClass('hover');
                    $('.results').html(`<h3>${outcome.message}</h3>`);
        
                    // Game Over, stop listener
@@ -28,7 +66,7 @@ $(document).ready(function() {
                } else {
                    const outcome = game.oMove(x, y);
                    
-                   $(eventTrigger).html($('<p class="piece">O</p>'));
+                   $piece.removeClass('hover');
                    $('.results').html(`<h3>${outcome.message}</h3>`);
     
                    // Game Over, stop listener
@@ -59,11 +97,25 @@ $(document).ready(function() {
     $('.rematch').on('click', function() {
         game.resetBoard();
         $tile = $('.tile');
-        $tile.html('');
+        $pieces = $('.piece');
+        // Re-hide all the pieces
+        $pieces.addClass('hidden');
+
+        // Re-set event listeners
         $tile.on('click', function() {
             newGame(this)
         });
 
+        $('.tile').hover( 
+            function() {
+                hoverIn(this) // Adds .hover piece when mouse is over empty tile.
+            },
+            function() {
+                hoverOut(this) // Removes .hover piece when mouse is over empty tile
+            }
+        );
+
+        // Update results section.
         $results = $('.results h3');
         if (xTurn) {
             $results.text(`X plays first...`)

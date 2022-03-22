@@ -45,6 +45,8 @@ h4:last-child {
     font-size: 5em;
     margin: 34px auto;
     left: 35%;
+    transition: all 0.5s;
+    /* transition: color 0.5s; */
 }
 
 .results {
@@ -53,4 +55,8 @@ h4:last-child {
 
 .hidden {
     visibility: hidden;
+}
+
+.hover, .hidden {
+    color: gainsboro;
 }
