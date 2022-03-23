@@ -346,7 +346,17 @@ const findBestMove = function(piece) {
     console.log("scores: " + scores);
     console.log("bestScore: " + bestScore);
     console.log("if you play to " + emptyTiles[bestScore] + ", then you will have " + scores[bestScore] + " ways to win");
-    return [emptyTiles[bestScore],scores[bestScore]]; // first element is tile, second is that tiles score
+
+    // Check if only one best move
+    let onlyOne = true;
+
+    for (let i = 0; i < scores.length; i++) {
+        if (i != bestScore && scores[i] === scores[bestScore]) {
+            onlyOne = false;
+        };
+    };
+
+    return [emptyTiles[bestScore],scores[bestScore], onlyOne]; // first element is tile position, second is tiles score, third is if theres only one best move
 
 };
 
@@ -519,7 +529,7 @@ const game = {
             movePos.x = bestMove[0][0];
             movePos.y = bestMove[0][1];
 
-        } else if (findBestMove('X')[1] > 1) { //blocks opponents best move
+        } else if (findBestMove('X')[1] > 1 && findBestMove('X')[2]) { //blocks opponents best move if they only have one
             console.log("blocking best move");
             const bestMove = findBestMove('X');
 
@@ -532,19 +542,13 @@ const game = {
             movePos.x = 1;
             movePos.y = 1;
 
-        } else if (this.turn === 4 && !this.board[0][0] && !this.board[0][2]) {
+        } else if (this.turn === 4) {
             console.log("placing on edge")
 
             //prioritize edges
             bestMove = findEdge()
             movePos.x = bestMove[0];
             movePos.y = bestMove[1];
-            
-        } else if (this.turn === 4) { // one exception to previous case
-
-            //right edge
-            movePos.x = 2;
-            movePos.y = 1;
             
         } else if (findCorner()) {
             console.log("placing in corner");
