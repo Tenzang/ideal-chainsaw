@@ -113,4 +113,8 @@ h4:last-child {
         width: 400px;
         margin: 0 auto;
     }
+
+    .menu {
+        top: 31%;
+    }
 }
