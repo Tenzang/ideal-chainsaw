@@ -24,27 +24,40 @@ const winnerFound = function(line) {
     return output;
 };
 
+//  TESTING FUNCTION
+// takes an index returns a set of columns, rows and diagonals based on that index
+const stratifyBoard = function(index) {
+
+    const stratifiedBoard = {
+        colToCheck: [],
+        rowToCheck: [],
+        descDiagCheck: [],
+        ascDiagCheck: []
+    };
+
+    for (let i = 0; i < game.board.length; i++) {
+
+        stratifiedBoard.colToCheck.push(game.board[index][i]);
+        stratifiedBoard.rowToCheck.push(game.board[i][index]);
+        stratifiedBoard.descDiagCheck.push(game.board[i][i]);
+        stratifiedBoard.ascDiagCheck.push(game.board[i][game.board.length - 1 - i]);
+
+    };
+
+    return stratifiedBoard;
+
+};
+//-----------------
+
 // Checks if there is a winning line present on the board.
 const winnerCheck = function() {
     
     for (let i = 0; i < game.board.length; i++) {
 
-        const colToCheck = [];
-        const rowToCheck = [];
-        const descDiagCheck = [];
-        const ascDiagCheck = [];
-
-        for (let j = 0; j < game.board.length; j++) {
-
-            colToCheck.push(game.board[i][j]);
-            rowToCheck.push(game.board[j][i]);
-            descDiagCheck.push(game.board[j][j]);
-            ascDiagCheck.push(game.board[j][game.board.length - 1 - j])
-
-        };
+        const stratifiedBoard = stratifyBoard(i);
         
         // returns true if all values in a row, column or diagonal are the same.
-        if ( winnerFound(colToCheck) || winnerFound(rowToCheck) || winnerFound(descDiagCheck) || winnerFound(ascDiagCheck) ) {
+        if ( winnerFound(stratifiedBoard.colToCheck) || winnerFound(stratifiedBoard.rowToCheck) || winnerFound(stratifiedBoard.descDiagCheck) || winnerFound(stratifiedBoard.ascDiagCheck) ) {
             return true;
         };
 
@@ -129,37 +142,25 @@ const finishLine = function() {
 
     for (let i = 0; i < game.board.length; i++) {
 
-        const colToCheck = [];
-        const rowToCheck = [];
-        const descDiagCheck = [];
-        const ascDiagCheck = [];
-
-        for (let j = 0; j < game.board.length; j++) {
-
-            colToCheck.push(game.board[i][j]);
-            rowToCheck.push(game.board[j][i]);
-            descDiagCheck.push(game.board[j][j]);
-            ascDiagCheck.push(game.board[j][game.board.length - 1 - j])
-
-        };
+        const stratifiedBoard = stratifyBoard(i);
         
         // returns winning position if there is one in current board state.
-        if ( Number.isInteger(winningLine(colToCheck, "O")) ) {
-            const winningXPos = winningLine(colToCheck, "O");
+        if ( Number.isInteger(winningLine(stratifiedBoard.colToCheck, "O")) ) {
+            const winningXPos = winningLine(stratifiedBoard.colToCheck, "O");
             let winningPos = [winningXPos, i]; // [x, y]
             console.log('winning column found');
             return winningPos;
-        } else if ( Number.isInteger(winningLine(rowToCheck, "O")) ) {
-            const winningYPos = winningLine(rowToCheck, "O");
+        } else if ( Number.isInteger(winningLine(stratifiedBoard.rowToCheck, "O")) ) {
+            const winningYPos = winningLine(stratifiedBoard.rowToCheck, "O");
             let winningPos = [i, winningYPos]; // [x, y]
             console.log('winning row found');
             return winningPos;
-        } else if ( Number.isInteger(winningLine(descDiagCheck, "O")) ) {
-            const winningXYPos = winningLine(descDiagCheck, "O");
+        } else if ( Number.isInteger(winningLine(stratifiedBoard.descDiagCheck, "O")) ) {
+            const winningXYPos = winningLine(stratifiedBoard.descDiagCheck, "O");
             let winningPos = [winningXYPos, winningXYPos]; // [x, y]
             return winningPos;
-        } else if ( Number.isInteger(winningLine(ascDiagCheck, "O")) ) {
-            const j = winningLine(ascDiagCheck, "O");
+        } else if ( Number.isInteger(winningLine(stratifiedBoard.ascDiagCheck, "O")) ) {
+            const j = winningLine(stratifiedBoard.ascDiagCheck, "O");
             let winningPos = [game.board.length - 1 - j, j]; // [x, y]
             return winningPos;
         };
