@@ -30,22 +30,31 @@ $(document).ready(function() {
 
     };
 
-    $('.tile').hover( 
-        function() {
-            hoverIn(this) // Adds .hover piece when mouse is over empty tile.
-        },
-        function() {
-            hoverOut(this) // Removes .hover piece when mouse is over empty tile
-        }
-    );
+    setTileHoverListener = function() {
+
+        $('.tile').hover( 
+
+            function() {
+                hoverIn(this) // Adds .hover piece when mouse is over empty tile.
+            },
+            function() {
+                hoverOut(this) // Removes .hover piece when mouse is over empty tile
+            }
+
+        );
+
+    };
+
+    setTileHoverListener();
+
     
     const newGame = function(eventTrigger) {
-        const $tile = $(eventTrigger);
+        const $tileClasses = $(eventTrigger)[0].classList;
         const $piece = $(eventTrigger).children();
     
         // Check class for coordinates of clicked node.
-        const x = $tile[0].classList[1][1];
-        const y = $tile[0].classList[2][1];
+        const x = $tileClasses[1][1];
+        const y = $tileClasses[2][1];
     
         // Run move function with coordinates the insert piece into node
         if ($piece.hasClass('hover')) {
@@ -53,31 +62,19 @@ $(document).ready(function() {
             if (xTurn) {
                 const outcome = game.xMove(x, y);
 
-                $piece.removeClass('hover');
-                $('.results').html(`<h3>${outcome.message}</h3>`);
+                placePiece(outcome, $piece);
 
                 // AI mode
                 aiMove(outcome);
-    
-                // Game Over, stop listener
-                if (outcome.gameOver) {
-                    $('.tile').off();
 
-                    $('.rematch').toggleClass('hidden'); // Reveal rematch button
-                };
+                gameOver(outcome);
 
             } else {
                 const outcome = game.oMove(x, y);
-                
-                $piece.removeClass('hover');
-                $('.results').html(`<h3>${outcome.message}</h3>`);
 
-                // Game Over, stop listener
-                if (outcome.gameOver) {
-                    $('.tile').off();
+                placePiece(outcome, $piece);
 
-                    $('.rematch').toggleClass('hidden'); // Reveal rematch button
-                };
+                gameOver(outcome);
     
             };
 
@@ -92,9 +89,28 @@ $(document).ready(function() {
     
     };
 
-    $('.tile').on('click', function() {
-        newGame(this);
-    });
+    const setTileClickListener = function() {
+        $('.tile').on('click', function() {
+            newGame(this);
+        });
+    };
+
+    setTileClickListener();
+
+    // Places piece on board.
+    const placePiece = function(outcome, $piece) {
+        $piece.removeClass('hover');
+        $('.results').html(`<h3>${outcome.message}</h3>`);
+    };
+
+    // if Game Over, stop listener
+    const gameOver = function(outcome) {
+        if (outcome.gameOver) {
+            $('.tile').off();
+
+            $('.rematch').toggleClass('hidden'); // Reveal rematch button
+        };
+    };
 
     // Rematch event listener
     $('.rematch').on('click', function() {
@@ -107,18 +123,9 @@ $(document).ready(function() {
         $pieces.addClass('hidden');
 
         // Re-set event listeners
-        $tile.on('click', function() {
-            newGame(this)
-        });
+        setTileClickListener();
 
-        $('.tile').hover( 
-            function() {
-                hoverIn(this) // Adds .hover piece when mouse is over empty tile.
-            },
-            function() {
-                hoverOut(this) // Removes .hover piece when mouse is over empty tile
-            }
-        );
+        setTileHoverListener();
 
         // Update results section.
         $results = $('.results h3');
@@ -132,8 +139,9 @@ $(document).ready(function() {
         
     });
 
+    // Toggles menu when space key is pressed.
     $('body').on('keyup', function() {
-        // Toggles menu when space key is pressed.
+
         if (arguments[0].originalEvent.code === 'Space') {
             $('.menu').slideToggle(400);
         };
@@ -141,12 +149,15 @@ $(document).ready(function() {
     });
     
     // Menu listeners
+    // if you click on the 2 player mode
     $('.mode1').on('click', function() {
         $(this).css('opacity', '100');
         $('.mode2').css('opacity', '50%');
-        $('.difficulties span span').css('opacity', '50%');
-        $('.difficulties').css('visibility', 'hidden');
-        $('.difficulties').css('opacity', '0');
+        $('span.option').css('opacity', '50%');
+        
+        $difficulties = $('.difficulties');
+        $difficulties.css('visibility', 'hidden');
+        $difficulties.css('opacity', '0');
 
         // play button
         $('#play').removeAttr('disabled');
@@ -158,6 +169,7 @@ $(document).ready(function() {
 
     });
 
+    // if you click on the AI mode
     $('.mode2').on('click', function() {
         $(this).css('opacity', '100');
         $('.mode1').css('opacity', '50%');
@@ -165,13 +177,14 @@ $(document).ready(function() {
         $('.difficulties').css('opacity', '100');
     });
 
-    $('.difficulties span span').on('click', function() {
-        $('.difficulties span span').css('opacity', '50%');
+    $('span.option').on('click', function() {
+        $('span.option').css('opacity', '50%');
         $(this).css('opacity', '100');
         $(this).removeClass('temp');
 
         // Set game mode
         game.mode = $(this).attr('id');
+        // Set name on score board
         $('.O h4:first-child').text(`${game.mode}'s Score:`)
     });
 
@@ -191,6 +204,37 @@ $(document).ready(function() {
             };
         }
     );
+    
+    // places ai's piece in DOM
+    const placeAiPiece = function(aiOutcome) {
+        // find tiles
+        let $tiles = $('.tile');
+
+        // find tile with ai's move position
+        $tiles.each(function() {
+
+            const $tile = $(this);
+            const xMatches = $tile[0].classList[1][1] == aiOutcome.movePos[0];
+            const yMatches = $tile[0].classList[2][1] == aiOutcome.movePos[1];
+            // place "O" in that position
+            if (xMatches && yMatches) {
+                const $piece = $tile.children().eq(0);
+                $piece.text('O');
+                $piece.removeClass('hidden');
+                $('.results').html(`<h3>${aiOutcome.message}</h3>`);
+
+                // Game Over, stop listener
+                if (aiOutcome.gameOver) {
+                    $('.tile').off();
+
+                    $('.rematch').toggleClass('hidden'); // Reveal rematch button
+                };
+
+            };
+
+        });
+
+    };
 
     const aiMove = function(outcome) {
 
@@ -200,33 +244,8 @@ $(document).ready(function() {
     
                 const aiOutcome = game.hughMove();
                 console.log(aiOutcome.movePos);
-    
-                // find tiles
-                let $tiles = $('.tile');
-    
-                // find tile with ai's move position
-                $tiles.each(function() {
-    
-                    const $tile = $(this);
-                    const xMatches = $tile[0].classList[1][1] == aiOutcome.movePos[0];
-                    const yMatches = $tile[0].classList[2][1] == aiOutcome.movePos[1];
-                    // place "O" in that position
-                    if (xMatches && yMatches) {
-                        const $piece = $tile.children().eq(0);
-                        $piece.text('O');
-                        $piece.removeClass('hidden');
-                        $('.results').html(`<h3>${aiOutcome.message}</h3>`);
-    
-                        // Game Over, stop listener
-                        if (aiOutcome.gameOver) {
-                            $('.tile').off();
-    
-                            $('.rematch').toggleClass('hidden'); // Reveal rematch button
-                        };
-    
-                    };
-    
-                });
+
+                placeAiPiece(aiOutcome);
     
             };
     
@@ -239,32 +258,7 @@ $(document).ready(function() {
                 const aiOutcome = game.carterMove();
                 console.log(aiOutcome.movePos);
     
-                // find tiles
-                let $tiles = $('.tile');
-    
-                // find tile with ai's move position
-                $tiles.each(function() {
-    
-                    const $tile = $(this);
-                    const xMatches = $tile[0].classList[1][1] == aiOutcome.movePos[0];
-                    const yMatches = $tile[0].classList[2][1] == aiOutcome.movePos[1];
-                    // place "O" in that position
-                    if (xMatches && yMatches) {
-                        const $piece = $tile.children().eq(0);
-                        $piece.text('O');
-                        $piece.removeClass('hidden');
-                        $('.results').html(`<h3>${aiOutcome.message}</h3>`);
-    
-                        // Game Over, stop listener
-                        if (aiOutcome.gameOver) {
-                            $('.tile').off();
-    
-                            $('.rematch').toggleClass('hidden'); // Reveal rematch button
-                        };
-    
-                    };
-    
-                });
+                placeAiPiece(aiOutcome);
     
             };
     
@@ -277,32 +271,7 @@ $(document).ready(function() {
                 const aiOutcome = game.joelMove();
                 console.log(aiOutcome.movePos);
     
-                // find tiles
-                let $tiles = $('.tile');
-    
-                // find tile with ai's move position
-                $tiles.each(function() {
-    
-                    const $tile = $(this);
-                    const xMatches = $tile[0].classList[1][1] == aiOutcome.movePos[0];
-                    const yMatches = $tile[0].classList[2][1] == aiOutcome.movePos[1];
-                    // place "O" in that position
-                    if (xMatches && yMatches) {
-                        const $piece = $tile.children().eq(0);
-                        $piece.text('O');
-                        $piece.removeClass('hidden');
-                        $('.results').html(`<h3>${aiOutcome.message}</h3>`);
-    
-                        // Game Over, stop listener
-                        if (aiOutcome.gameOver) {
-                            $('.tile').off();
-    
-                            $('.rematch').toggleClass('hidden'); // Reveal rematch button
-                        };
-    
-                    };
-    
-                });
+                placeAiPiece(aiOutcome);
     
             };
     
@@ -314,16 +283,24 @@ $(document).ready(function() {
 
     // Easter Egg
     $('h1').on('click', function() {
+        
         game.toeTacTic = !game.toeTacTic;
+
         $tic = $('#tic');
         $toe = $('#toe');
-        if (game.toeTacTic === true) {
+
+        if (game.toeTacTic) {
+
             $tic.css('left', '153px');
             $toe.css('left', '-153px');
+
         } else {
+
             $tic.css('left', '0');
             $toe.css('left', '0');
+
         };
+
     });
 
 });
