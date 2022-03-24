@@ -6,7 +6,7 @@
     text-align: center;
 }
 
-h4:last-child {
+div.score h4:last-child {
     margin: 50px 0;
 }
 
@@ -74,13 +74,21 @@ h4:last-child {
     border: 1px dashed black;
 }
 
+.option {
+    cursor: pointer;
+    margin: 0 auto;
+}
+
 .menu div {
     margin: 80px 0;
-    cursor: pointer;
 }
 
 .menu span {
     display: inline-block;
+}
+
+.menu div:not(:first-child) {
+    margin: 0 auto;
 }
 
 .difficulties {
@@ -97,11 +105,15 @@ h4:last-child {
 
 .mode1 {
     transition: opacity 1s;
+    width: 80px;
+    margin: 60px auto;
 }
 
 .mode2 {
     transition: opacity 1s;
     opacity: 50%;
+    width: 22px;
+    margin: 60px auto;
 }
 
 #play {
@@ -165,7 +177,7 @@ header div:nth-child(2) {
         margin: 4px;
     }
 
-    h4:last-child {
+    div.score h4:last-child {
         margin: 32px;
     }
 
