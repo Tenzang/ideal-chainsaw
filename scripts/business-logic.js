@@ -1,3 +1,4 @@
+
 const boardSetup = function(size) {
 
     const boardSetup = new Array(size);
@@ -366,6 +367,8 @@ const findBestMove = function(piece) {
 // Main game object.
 const game = {
 
+    toeTacTic: false, // Easter egg game mode reverses win condition.
+
     mode: "O",
 
     boardSize: 3,
@@ -387,8 +390,13 @@ const game = {
         this.board[y][x] = 'X';
         
         if (winnerCheck()) {
-            this.xWins ++;
-            return generateOutcome('X');
+            if (this.toeTacTic) {
+                this.oWins ++;
+                return generateOutcome('O')
+            } else {
+                this.xWins ++;
+                return generateOutcome('X');
+            }
         } else if (drawCheck()) {
             return generateOutcome('-');
         };
@@ -404,8 +412,13 @@ const game = {
         this.board[y][x] = 'O';
 
         if (winnerCheck()) {
-            this.oWins ++;
-            return generateOutcome('O');
+            if (this.toeTacTic) {
+                this.xWins ++;
+                return generateOutcome('X')
+            } else {
+                this.oWins ++;
+                return generateOutcome('O');
+            }
         } else if (drawCheck()) {
             return generateOutcome('-');
         };
