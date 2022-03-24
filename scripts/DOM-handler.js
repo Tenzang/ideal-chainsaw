@@ -312,4 +312,18 @@ $(document).ready(function() {
 
     };
 
+    // Easter Egg
+    $('h1').on('click', function() {
+        game.toeTacTic = !game.toeTacTic;
+        $tic = $('#tic');
+        $toe = $('#toe');
+        if (game.toeTacTic === true) {
+            $tic.css('left', '153px');
+            $toe.css('left', '-153px');
+        } else {
+            $tic.css('left', '0');
+            $toe.css('left', '0');
+        };
+    });
+
 });

@@ -108,6 +108,27 @@ h4:last-child {
     transition: all 1s;
 }
 
+header {
+    width: 14em;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+header div {
+    display: inline-block;
+}
+
+header div:nth-child(2) {
+    margin: -10px;
+}
+
+.easter-egg {
+    position: relative;
+    left: 0;
+    transition: left 1s;
+}
+
+
 @media (max-width: 900px) {
     .score {
         width: 400px;
