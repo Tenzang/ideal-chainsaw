@@ -64,7 +64,7 @@ h4:last-child {
 .menu {
     display: none;
     position: absolute;
-    top: 9%;
+    top: 10%;
     left: calc(50% - 250px);
     width: 500px;
     height: 500px;
@@ -112,9 +112,53 @@ h4:last-child {
     .score {
         width: 400px;
         margin: 0 auto;
+        height: 6em;
     }
 
     .menu {
-        top: 31%;
+        top: 22%;
+        width: 395px;
+        height: 395px;
+        left: calc(50% - 190px);
+    }
+
+    .menu div {
+        margin: 59px 0;
+    }
+
+    .tile {
+        height: 7em;
+        width: 7em;
+    }
+
+    .board {
+        height: 340px;
+    } 
+
+    .heading {
+        margin: 0;
+        font-size: x-large;
+    }
+
+    h4 {
+        margin: 4px;
+    }
+
+    h4:last-child {
+        margin: 32px;
+    }
+
+    h3 {
+        margin: 10px;
+    }
+
+    body p {
+        margin: 10px;
+    }
+
+    .piece {
+        font-size: 4em;
+        left: 31%;
+        margin: 23px auto;
     }
 }
