@@ -45,7 +45,7 @@ div.score h4:last-child {
     font-size: 5em;
     margin: 34px auto;
     left: 35%;
-    transition: color 0.5s;
+    transition: all 0.5s;
 }
 
 .results {
@@ -64,7 +64,7 @@ div.score h4:last-child {
 .menu {
     display: none;
     position: absolute;
-    top: 95px;
+    top: 100px;
     left: calc(50% - 250px);
     width: 500px;
     height: 500px;
