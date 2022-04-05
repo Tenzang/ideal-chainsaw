@@ -1,8 +1,7 @@
-**Ideal Chainsaw** 
+**Ideal Chainsaw**
 <br>
-(*Tic-Tac-Toe*)
+*[(*Tic-Tac-Toe*)](https://tenzang.github.io/ideal-chainsaw/)*
 ===============================================================================
-
 ## **About the application:**
 -------------------------------------------------------------------------------
 ### This application uses:
@@ -44,9 +43,3 @@ Things to note when selecting *AI* mode:
 - While in default mode the first *player* will alternate on a rematch, in *AI* mode the *AI* will be forced to play second. This can be circumvented if the *player* switches to *AI mode* in a game where it's *"O"'s* turn to play first however as mentioned above the *AI* will not play the **first** move.
 
 *Easter Egg: If you click on the "Tic-Tac-Toe" heading at the top of the screen, the rules of the game will be reversed!*
-
--------------------------------------------------------------------------------
-
-**Click *[here](https://tenzang.github.io/ideal-chainsaw/)* to play the game.**
-
--------------------------------------------------------------------------------
